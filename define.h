@@ -1,6 +1,7 @@
 #ifndef DEFINE_H
 #define DEFINE_H
 #define pi	       	   (3.1415926)
+#define g                  (9.81)
 //---------------battery parameter-----------
 #define CELL_CAPACITY  	   (15.0)
 #define CELL_WEIGHT    	   (450.0)
@@ -31,5 +32,19 @@
 #define DRIVE_TRAIN_GEARJ  (0.08)
 #define DRIVE_TRAINGEAREFF (0.97)
 
-
+//----------------------VEHICLE PARAMETER---------------------
+#define VEH_WHEELS         (4.0)
+#define VEH_ROADF          (0.0)
+#define VEH_CD             (0.28)
+#define VEH_A              (2.22)
+#define VEH_WEIGHT         (1500.0)
+#define VEH_PAYLOAD        (75.0)
+#define VEH_OVERPWR        (200.0)
+#define VEH_WIND           (3.0)
+#define VEH_ANGLE          (3.0)
+//---------------------- SOLAR PANE PARAMETER------------------
+#define SOLAR_AREA         (2.0)
+#define SOLAR_PANELEFF     (0.22)
+#define SOLAR_DCDCEFF      (0.95)
+#define SOLAR_PSUN         (700)
 #endif

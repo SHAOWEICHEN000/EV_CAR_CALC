@@ -8,9 +8,10 @@
 #include <stdbool.h>
 #include <limits.h>
 #include <float.h>
-//#include "solar.h"
+#include "solar.h"
 #include"battery.h"
 #include "mechanic.h"
+#include"vehicle.h"
 //#include"throttle.h"
 //#include "plot_bridge.h"
 #include "define.h"
@@ -21,7 +22,10 @@ int main() {
     wheel wheel=setupWheel(WHEEL_RADIUS,WHEEL_INERTIA,WHEEL_ROLL);
     motor motor=setupMotor(MOTOR_LMAX,MOTOR_RPMR,MOTOR_RPMMAX, MOTOR_ETA,MOTOR_INERTIA);
     dt    driveTr=setupDriveTrain(DRIVE_TRAIN_INVEFF,DRIVE_TRAIN_REGEN,DRIVE_TRAIN_RATIO,DRIVE_TRAIN_GEARJ,DRIVE_TRAINGEAREFF, battery,motor,wheel);
-    printf("Drive_train_efficiency=%f",driveTr.efficiency);
+    solar solar=setupSolar(SOLAR_AREA,SOLAR_PANELEFF,SOLAR_DCDCEFF,SOLAR_PSUN);
+    veh   vehicle=setupVehicle(VEH_WHEELS,VEH_ROADF,VEH_CD,VEH_A,VEH_WEIGHT,VEH_PAYLOAD,VEH_OVERPWR,driveTr,VEH_WIND,VEH_ANGLE);
+    printf("Drive_train_efficiency=%f/n",driveTr.efficiency);
+    printf("max speed=%f /n",vehicle.maxSpeed);
     return 0;
 }
 
