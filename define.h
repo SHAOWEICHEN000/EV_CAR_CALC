@@ -47,4 +47,8 @@
 #define SOLAR_PANELEFF     (0.22)
 #define SOLAR_DCDCEFF      (0.95)
 #define SOLAR_PSUN         (700)
+
+//-----------------------main----------------------------------
+#define MAX_LINES           90
+#define INITIAL_VELEOCITY   0
 #endif
