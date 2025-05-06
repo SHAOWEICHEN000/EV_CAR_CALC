@@ -15,7 +15,7 @@
 #include "define.h"
 #include"free.h"
 #include"memalloc.h"
-void memalloc(double *v,double *a,double *Td,double *Tm,double *motRPM,double *SOC,double *dist,double *Pbat,double *Vin)
+void memalloc(double *v,double *a,double *Td,double *Tm,double *motRPM,double *SOC,double *dist,double *Pbat,double *Vin,double *G,double *Ibat,double *Pmot)
 {
     if (!v) {
     perror("Memory allocation failed");
@@ -53,5 +53,16 @@ void memalloc(double *v,double *a,double *Td,double *Tm,double *motRPM,double *S
     perror("memory allocation failed");
     exit(1);
     }
-        
+    if(!G){
+    perror("memory allocation failed");
+    exit(1);
+    }
+    if(!Ibat){
+    perror("memory allocation failed");
+    exit(1);
+    }  
+     if(!Pmot){
+    perror("memory allocation failed");
+    exit(1);
+    }   
 }

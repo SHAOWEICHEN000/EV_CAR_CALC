@@ -14,7 +14,7 @@
 #include"vehicle.h"
 #include "define.h"
 #include"free.h"
-void freeMem(double *v,double *a,double *Td,double *Tm,double *motRPM,double *SOC,double *dist,double *Pbat,double *Vin)
+void freeMem(double *v,double *a,double *Td,double *Tm,double *motRPM,double *SOC,double *dist,double *Pbat,double *Vin,double *G,double *Ibat, double *Pmot)
 {
     if (v)free(v);
     if (a)free(a);
@@ -25,4 +25,7 @@ void freeMem(double *v,double *a,double *Td,double *Tm,double *motRPM,double *SO
     if (dist)free(dist);
     if (Pbat)free(Pbat);
     if (Vin)free(Vin);
+    if (G)free(G);
+    if(Ibat)free(Ibat);
+    if(Pmot)free(Pmot);
 }

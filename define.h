@@ -46,9 +46,12 @@
 #define SOLAR_AREA         (2.0)
 #define SOLAR_PANELEFF     (0.22)
 #define SOLAR_DCDCEFF      (0.95)
-#define SOLAR_PSUN         (700)
+#define SOLAR_PSUN         (300)
 
 //-----------------------main----------------------------------
-#define MAX_LINES           90
-#define INITIAL_VELEOCITY   0
+#define MAX_LINES           100
+#define INITIAL_VELEOCITY   0.0
+#define rho                 1.2
+#define time                1
+#define eps                 0.0001
 #endif

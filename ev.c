@@ -17,10 +17,10 @@
 #include "define.h"
 #include"free.h"
 #include"memalloc.h"
+#include"power.h"
 double t[MAX_LINES], alpha[MAX_LINES], beta[MAX_LINES];
-double v[MAX_LINES];
-int n;
-double TmaxAvail,TregenLimit ,TminAvail ;
+double v[MAX_LINES],usable,ran_Km;
+int n,iter;
 int main() {
 
     //-----------------------------------------------------------------Set up parameter-----------------------------------------------------------------
@@ -43,38 +43,53 @@ int main() {
     double *Pbat=malloc(n*sizeof(double));
     double *Vin=malloc(n*sizeof(double));
     double *dist=malloc(n*sizeof(double));
-    memalloc(v,a, Td,Tm,motRPM,SOC,dist,Pbat,Vin);//check memory alloc condition
+    double *G=malloc(n*sizeof(double));
+    double *Ibat=malloc(n*sizeof(double));
+    double *Pmot=malloc(n*sizeof(double));
+    memalloc(v,a, Td,Tm,motRPM,SOC,dist,Pbat,Vin,G,Ibat,Pmot);//check memory alloc condition
    
     //------------------------------------------------------------------main----------------------------------------------------------------------------
     SOC[0]=battery.socFull;
     v[0]=INITIAL_VELEOCITY;
+    a[0]=0;
+    motRPM[0]=0.0;
+    Tm[0]=0.0;
+    G[0]=0;
+    Ibat[0]=0;
     for(int i=1;i<n;i++)
     {
-      
-    //------------------------------------------------------------------ 由油門 α 計算可用馬達扭矩 ---------------------------------------------------------
     SOC[i]=battery.socFull;
     Vin[i]=alphaRatio(alpha,battery,i);
-    motRPM[i]=motRpmCalc(v[i-1],wheel,driveTr);
+    motRpmCalc(v,wheel,driveTr,i,motRPM);
     judgeTorque(i,motRPM,motor,Vin,battery,driveTr,beta,alpha,Tm);
-    
-            
+    v[i]=velocityDetect(Tm,driveTr,wheel,aeroForce(vehicle,v[i-1]),rollForce(wheel,vehicle,v[i-1]),gradeForce(vehicle),brakeForce(vehicle),vehicle,a,v,i);
+    Pmot[i]  = motPower(motRPM,Tm,i);  //kW
+    G[i] = solarPower(solar);   // kW   
+    PowerToSoc(Pmot,G,i,vehicle,driveTr,Ibat,SOC,battery,Pbat);//Power and SOC
+    dist[i]= dist[i-1] + v[i]*time/1000; // km   
+    iter=i;   	
     }
-   
+     usable = vehicle.driveTr.battery.socFull - vehicle.driveTr.battery.socEmpty;
+     ran_Km = dist[iter] * usable/(SOC[0]-SOC[iter]+eps);
     
     //-----------------------------------------------------------------result----------------------------------------------------------------------------
     printf("Drive_train_efficiency=%f\n",driveTr.efficiency);
     printf("max speed=%f \n",vehicle.maxSpeed);
     printf("SOC STATUS=%f \n",SOC[0]);
     printf("Vin[%d]=%lf\n",0,Vin[0]);
-    printf(" TmaxAvail=%lf\n",TmaxAvail);
-    printf("TminAvail=%lf\n",TminAvail);
     printf("Tm=%lf\n",beta[2]);
+    printf("Motor_Lmax=%lf\n",motor.Lmax);
+    printf("battery.Vnom=%lf\n",battery.Vnom);
+    printf("usable ≈ %5.1f %\n", usable);
+    printf("Range ≈ %5.1f km\n", ran_Km);
     for (int i = 0; i < n; i++) {
-       // printf("Line %d: Time = %.2f, Throttle = %.2f, Brake = %.2f\n", i + 1, t[i], alpha[i], beta[i]);
-       //printf("Tm=%lf\n",motRPM[i]);
+        printf("Line %2d: Time = %8.2f, Throttle = %8.2f, Brake = %8.2f, Vin = %8.2f, v = %8.2f, a = %8.2f, Tm = %8.2f, motRPM=%8.2f,Pmot=%8.2f,Pbat=%8.2f,SOC=%8.2f,dist=%8.2f\n",
+       i + 1, t[i], alpha[i], beta[i], Vin[i], v[i], a[i], Tm[i],motRPM[i],Pmot[i],Pbat[i],SOC[i],dist[i]);
+        
+       //printf("v(%d)=%lf\n",i,v[i]);
     }
     //-----------------------------------------------------------------free pointer----------------------------------------------------------------------
-    freeMem(v,a, Td,Tm,motRPM,SOC,dist,Pbat,Vin);
+    freeMem(v,a, Td,Tm,motRPM,SOC,dist,Pbat,Vin,G,Ibat,Pmot);
     return 0;
 }
 
