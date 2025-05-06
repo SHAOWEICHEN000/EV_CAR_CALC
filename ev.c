@@ -34,18 +34,18 @@ int main() {
     veh   vehicle=setupVehicle(VEH_WHEELS,VEH_ROADF,VEH_CD,VEH_A,VEH_WEIGHT,VEH_PAYLOAD,VEH_OVERPWR,driveTr,VEH_WIND,VEH_ANGLE);
     readThrottleData("throttle.txt", t, alpha, beta, MAX_LINES, &n);
     //-----------------------------------------------------------recall function-------------------------------------------------------------------------
-    double *v = malloc(n*sizeof(double));
-    double *a=malloc(n*sizeof(double));
-    double *Td=malloc(n*sizeof(double));
-    double *Tm=malloc(n*sizeof(double));
-    double *motRPM=malloc(n*sizeof(double));
-    double *SOC=malloc(n*sizeof(double));
-    double *Pbat=malloc(n*sizeof(double));
-    double *Vin=malloc(n*sizeof(double));
-    double *dist=malloc(n*sizeof(double));
-    double *G=malloc(n*sizeof(double));
-    double *Ibat=malloc(n*sizeof(double));
-    double *Pmot=malloc(n*sizeof(double));
+    double *v = (double*)malloc(n*sizeof(double));
+    double *a=(double*)malloc(n*sizeof(double));
+    double *Td=(double*)malloc(n*sizeof(double));
+    double *Tm=(double*)malloc(n*sizeof(double));
+    double *motRPM=(double*)malloc(n*sizeof(double));
+    double *SOC=(double*)malloc(n*sizeof(double));
+    double *Pbat=(double*)malloc(n*sizeof(double));
+    double *Vin=(double*)malloc(n*sizeof(double));
+    double *dist=(double*)malloc(n*sizeof(double));
+    double *G=(double*)malloc(n*sizeof(double));
+    double *Ibat=(double*)malloc(n*sizeof(double));
+    double *Pmot=(double*)malloc(n*sizeof(double));
     memalloc(v,a, Td,Tm,motRPM,SOC,dist,Pbat,Vin,G,Ibat,Pmot);//check memory alloc condition
    
     //------------------------------------------------------------------main----------------------------------------------------------------------------
@@ -80,8 +80,8 @@ int main() {
     printf("Tm=%lf\n",beta[2]);
     printf("Motor_Lmax=%lf\n",motor.Lmax);
     printf("battery.Vnom=%lf\n",battery.Vnom);
-    printf("usable ≈ %5.1f %\n", usable);
-    printf("Range ≈ %5.1f km\n", ran_Km);
+    printf("usable ≈ %lf \n", usable);
+    printf("Range ≈ %lf km\n", ran_Km);
     for (int i = 0; i < n; i++) {
         printf("Line %2d: Time = %8.2f, Throttle = %8.2f, Brake = %8.2f, Vin = %8.2f, v = %8.2f, a = %8.2f, Tm = %8.2f, motRPM=%8.2f,Pmot=%8.2f,Pbat=%8.2f,SOC=%8.2f,dist=%8.2f\n",
        i + 1, t[i], alpha[i], beta[i], Vin[i], v[i], a[i], Tm[i],motRPM[i],Pmot[i],Pbat[i],SOC[i],dist[i]);

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-void run_EV();  // C 函式給 C++ 用
+int main();  // C 函式給 C++ 用
 
 #ifdef __cplusplus
 }
